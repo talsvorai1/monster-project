@@ -1,0 +1,19 @@
+input: aws ecr create-repository --repository-name monster-image-repo --region us-east-1
+
+outpput: {
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:642341975645:repository/monster-image-repo",
+        "registryId": "642341975645",
+        "repositoryName": "monster-image-repo",
+        "repositoryUri": "642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo",
+        "createdAt": 1675066129.0,
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": false
+        },
+        "encryptionConfiguration": {
+            "encryptionType": "AES256"
+        }
+    }
+}
+
