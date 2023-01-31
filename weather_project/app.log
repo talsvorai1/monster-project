@@ -1,9 +1,1 @@
 This is a debugging message
-Received request for city: lod
-Country is: IL
-Min temp for lod is [12.9, 14.1, 13.7, 13.9, 12.2, 11.5, 12.2]
-Max temp for lod is [19.4, 19.1, 19.1, 17.5, 19.9, 19.5, 12.2]
-Received request for city: metula
-Country is: IL
-Min temp for metula is [8.6, 9.4, 8.2, 8.2, 8.9, 9.3, 9.5]
-Max temp for metula is [14.5, 13.0, 12.4, 11.8, 13.2, 13.7, 9.5]
