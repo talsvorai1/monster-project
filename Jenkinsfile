@@ -34,7 +34,7 @@ pipeline {
                 echo 'Uploading artifact to ECR'
 
                 echo 'Stoping container'
-                sh 'docker stop monster-container-$PREVIOUS_BUILD'
+                sh 'docker stop monster-container-$BUILD_NUMBER'
             }
         }
 
