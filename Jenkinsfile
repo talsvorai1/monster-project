@@ -13,7 +13,7 @@ pipeline {
                 sh '''
                 cd weather_project
                 docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER .
-                docker run -d -p 80:8989--name monster-container 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
+                docker run -d -p 80:8989 --name monster-container 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
                 '''
             }
         }
