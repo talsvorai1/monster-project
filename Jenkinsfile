@@ -11,7 +11,7 @@ pipeline {
                 sh '''
                 docker run hello-world
                 docker rm $(docker ps -aq)
-                docker rmi -f $(docker images -aq)
+                docker rmi -f $(docker images -q)
                 '''                
             }
         }
