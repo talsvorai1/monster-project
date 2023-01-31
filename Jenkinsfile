@@ -19,10 +19,10 @@ pipeline {
         }
         stage('Upload to ECR') {
             steps {
-                echo 'Pruning old containers and images'
+                echo 'Pruning container and image'
                 sh '''
-                docker rm -f $(docker ps -aq)
-                docker rmi -f $(docker images -aq)
+                docker rm monster-container-$BUILD_NUMBER
+                docker rmi 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
                 '''
             }
         }
