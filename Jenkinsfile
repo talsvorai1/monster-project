@@ -4,7 +4,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Pruning old containers and images'
+                sh '''
+                docker container prune --force
+                docker image prune --force
+                '''
+                echo 'Creating new image'
+                sh '''
+                cd weather_project
+                docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER .
+                '''
             }
         }
         stage('Test') {
