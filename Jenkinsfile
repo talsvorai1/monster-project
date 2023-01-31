@@ -30,7 +30,6 @@ pipeline {
             steps {
                 echo 'Testing app connectivity'
                 sh '''
-                cd weather_project
                 python3 -m unittest connection_unittest.py'
                 '''
             }
