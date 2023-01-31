@@ -6,7 +6,7 @@ WORKDIR /home/weather
 ENV BG_COLOR "#ffffff"
 
 COPY /requirements.txt /home/weather/
-RUN sudo apt install python3-pip
+RUN apt install python3-pip
 RUN pip3 install -r /home/weather/requirements.txt
 
 
