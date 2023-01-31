@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Pruning old containers and images'
                 sh '''
-                docker container prune --force
+                docker rm -f $(docker ps -aq)
                 docker rmi -f $(docker images -aq)
                 '''
                 echo 'Creating new image'
