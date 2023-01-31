@@ -28,7 +28,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing app connectivity'
-                sh 'python3 -m unittest connection-unittest.py'
+                sh 'python3 -m unittest connection_unittest.py'
             }
         }
         stage('Upload to ECR') {
