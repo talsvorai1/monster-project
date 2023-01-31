@@ -9,8 +9,9 @@ pipeline {
             steps {
                 echo 'Removing old image and container'
                 sh '''
+                docker run hello-world
                 docker rm $(docker ps -aq)
-                docker rmi $(docker images '642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo' -a -q)
+                docker rmi -f $(docker images -aq)
                 '''                
             }
         }
