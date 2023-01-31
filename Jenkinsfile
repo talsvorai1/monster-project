@@ -4,11 +4,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Pruning old containers and images'
-                sh '''
-                docker rm -f $(docker ps -aq)
-                docker rmi -f $(docker images -aq)
-                '''
                 echo 'Creating new image'
                 sh '''
                 cd weather_project
@@ -22,6 +17,16 @@ pipeline {
                 echo 'Testing..'
             }
         }
+        stage('Upload to ECR') {
+            steps {
+                echo 'Pruning old containers and images'
+                sh '''
+                docker rm -f $(docker ps -aq)
+                docker rmi -f $(docker images -aq)
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
