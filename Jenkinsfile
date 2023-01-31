@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo $PREVIOUS_BUILD
+                echo ${env.PREVIOUS_BUILD}
                 echo 'Creating new image'
                 sh '''
                 cd weather_project
