@@ -3,8 +3,6 @@ FROM python:3.8-alpine
 RUN mkdir /home/weather
 WORKDIR /home/weather
 
-ENV BG_COLOR "#ffffff"
-
 COPY /requirements.txt /home/weather/
 RUN pip3 install -r /home/weather/requirements.txt
 
