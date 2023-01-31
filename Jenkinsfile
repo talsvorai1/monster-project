@@ -28,10 +28,17 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing app connectivity'
+                echo 'Testing app connectivity with unittest'
                 sh '''
                 cd weather_project
                 python3 -m unittest connection_unittest.py
+                '''
+                echo 'Testing funcionallity via positive and negative selenium tests'
+                sh '''
+                cd weather_project
+                docker start monster-container-$BUILD_NUMBER 
+                python3 selenium_negative.py
+                python3 selenium_positive.py
                 '''
             }
         }
