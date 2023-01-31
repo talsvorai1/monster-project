@@ -16,11 +16,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'Creating new image and running container'
+                echo 'Creating new image, running and stopping container'
                 sh '''
                 cd weather_project
                 docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER .
                 docker run -d -p 80:8989 --name monster-container-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
+                docker stop monster-container-$BUILD_NUMBER                
                 '''
             }
         }
@@ -34,8 +35,7 @@ pipeline {
             steps {
                 echo 'Uploading artifact to ECR'
 
-                echo 'Stoping container'
-                sh 'docker stop monster-container-$BUILD_NUMBER'
+
             }
         }
 
