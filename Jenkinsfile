@@ -1,9 +1,13 @@
 pipeline {
     agent any
+    environment {
+        PREVIOUS_BUILD = $BUILD_NUMBER -1
+    }
 
     stages {
         stage('Build') {
             steps {
+                echo $PREVIOUS_BUILD
                 echo 'Creating new image'
                 sh '''
                 cd weather_project
