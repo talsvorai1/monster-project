@@ -38,8 +38,8 @@ pipeline {
                 sh '''
                 cd weather_project
                 docker start monster-container-$BUILD_NUMBER 
-                python3 selenium_negative.py || { echo "Negative test - Error not returned - Test not successful"; error("Negative test failed"); }
-                python3 selenium_positive.py || { echo "Positive test - Name was not found by website - Test unseccessful"; error("Positive test failed"); }
+                python3 selenium_negative.py 
+                python3 selenium_positive.py 
                 docker stop monster-container-$BUILD_NUMBER 
                 '''
             }
