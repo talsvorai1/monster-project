@@ -10,6 +10,7 @@ pipeline {
                 echo 'Removing old image and container'
                 sh '''
                 docker run hello-world
+                docker stop $(docker ps -aq)
                 docker rm $(docker ps -aq)
                 docker rmi -f $(docker images -q)
                 '''                
@@ -39,6 +40,7 @@ pipeline {
                 docker start monster-container-$BUILD_NUMBER 
                 python3 selenium_negative.py
                 python3 selenium_positive.py
+                docker stop monster-container-$BUILD_NUMBER 
                 '''
             }
         }

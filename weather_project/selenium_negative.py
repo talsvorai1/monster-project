@@ -5,13 +5,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 #import time
 from selenium.webdriver.common.by import By
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+###
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+###
 
 
 
 def negative_test(invalid_city):
     #open the website
-    driver.get("http:localhost")
+    driver.get("http://54.87.238.94")
     #in index.html: name = "city"
     search = driver.find_element(By.NAME, "city")
     search.send_keys(invalid_city) 	#write inside search window
