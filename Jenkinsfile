@@ -10,7 +10,7 @@ pipeline {
                 echo 'Removing old image and container'
                 sh '''
                 docker rm $(docker ps -aq)
-                docker rmi -f $(docker images | grep '642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo')
+                docker rmi -f $(docker images | grep '642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:*')
                 '''                
             }
         }
