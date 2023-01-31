@@ -5,11 +5,19 @@ pipeline {
     }
 
     stages {
+        stage('Clean') {
+            steps {
+                echo 'Removing old image and container'
+                sh '''
+                docker rm monster-container-$PREVIOUS_BUILD
+                docker rmi -f 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$PREVIOUS_BUILD
+                '''                
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Creating new image'
+                echo 'Creating new image and running container'
                 sh '''
-                echo $PREVIOUS_BUILD
                 cd weather_project
                 docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER .
                 docker run -d -p 80:8989 --name monster-container-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
@@ -23,12 +31,10 @@ pipeline {
         }
         stage('Upload to ECR') {
             steps {
-                echo 'Pruning container and image'
-                sh '''
-                docker stop monster-container-$BUILD_NUMBER
-                docker rm monster-container-$BUILD_NUMBER
-                docker rmi -f 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$BUILD_NUMBER
-                '''
+                echo 'Uploading artifact to ECR'
+
+                echo 'Stoping container'
+                sh 'docker stop monster-container-$PREVIOUS_BUILD'
             }
         }
 
