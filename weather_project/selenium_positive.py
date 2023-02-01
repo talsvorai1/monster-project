@@ -13,7 +13,7 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 ###
 def positive_test(valid_city):
     #open the website
-    driver.get("http://54.87.238.94")
+    driver.get("http://52.200.162.71")
     #in index.html: name = "city"
     search = driver.find_element(By.NAME, "city")
     search.send_keys(valid_city)        #write inside search window
