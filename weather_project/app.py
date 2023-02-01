@@ -29,8 +29,7 @@ logger.debug('This is a debugging message')
 
 app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])                 #make web for user to input
-def index():                                             #creating index view file
-    bg_color = os.environ['BG_COLOR']  
+def index():                                             #creating index view file 
     if request.method == "POST":
         city = request.form["city"]
         ############
@@ -74,7 +73,7 @@ def index():                                             #creating index view fi
                                city=name, country=country)
     else:
   
-        return render_template('index.html', bg_color=bg_color)
+        return render_template('index.html')
 def save_search_data(name, country, min_list, max_list, humidity_list, date_list):
     # Create a dictionary to store the search data
     search_data = {
