@@ -18,7 +18,7 @@ pipeline {
                 echo 'Creating new image, running and stopping container'
                 sh '''
                 cd weather_project
-                docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$JON_NAME-$BUILD_NUMBER .
+                docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$JOB_NAME-$BUILD_NUMBER .
                 docker run -d -p 80:8989 --name monster-container-$JOB_NAME-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$JOB_NAME-$BUILD_NUMBER
                 docker stop monster-container-$JOB_NAME-$BUILD_NUMBER                
                 '''
