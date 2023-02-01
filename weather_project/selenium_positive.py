@@ -20,11 +20,8 @@ def positive_test(valid_city):
     #to press enter:
     search.send_keys(Keys.RETURN)
     #in result.html class = "card". if found it means name is valid and city is returned, not error:
-    if driver.find_element(By.CLASS_NAME, "card"):
-        print("Positive test - Name found by webstie - Test successful")
-    else:
-        print("Positive test - Name was not found by website - Test unseccessful")
-
+    assert driver.find_element(By.CLASS_NAME, "card")
+    print("Positive test - Name found by webstie - Test successful")
     driver.close()
     driver.quit()
 

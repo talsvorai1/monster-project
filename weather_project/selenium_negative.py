@@ -25,11 +25,8 @@ def negative_test(invalid_city):
     search.send_keys(Keys.RETURN)
     #in invalid_name.html checking return "Invalid name inserted - try again!":
     error_message = driver.find_element(By.TAG_NAME, "h1").text #getting text from h1 element
-    if error_message == "Invalid name inserted - try again!":
-        print("Negative test - Error returned - Test successful")
-    else:
-        print("Negative test - Error not returned - Test not successful")
-
+    assert error_message == "Invalid name inserted - try again!"
+    print("Negative test - Error returned - Test successful")
     driver.close()
     driver.quit()
 
