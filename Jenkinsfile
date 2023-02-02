@@ -55,13 +55,14 @@ pipeline {
                 echo 'Connecting via ssh to master node'
                 echo 'Pulling and deploying Artifact'
                 script {
-		    sshagent(['monster-deploy-cred']) {
-                        sh '''
+		            sshagent(['monster-deploy-cred']) {
+                    sh '''
 	                ssh -o StrictHostKeyChecking=no -l ubuntu 3.226.109.188 << EOF
-			aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
-		        docker pull 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
-		    }
-		}
+			        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
+		            docker pull 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                    '''
+		            }
+		        }
             }
         }
     }    
