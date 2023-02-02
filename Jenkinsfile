@@ -43,7 +43,7 @@ pipeline {
                         echo 'Testing app connectivity with unittest'
                         sh '''
                         cd weather_project
-                        python3 -m unittest connection_unittest.py
+                        python3 -m unittest connection_unittest.pyddddd
                         '''
                         echo 'Testing funcionallity via positive and negative selenium tests'
                         sh '''
