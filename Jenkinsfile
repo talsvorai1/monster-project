@@ -45,7 +45,6 @@ pipeline {
             steps {
                 echo 'Uploading artifact to ECR'
                 sh '''
-                aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
                 docker push 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
                 '''
             }
