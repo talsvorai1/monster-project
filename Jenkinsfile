@@ -50,7 +50,7 @@ pipeline {
                 '''
             }
         }
-        stage('deployment') {
+        stage('Deployment') {
             steps {
                 echo 'Connecting via ssh to master node'
                 echo 'Pulling and deploying Artifact'
