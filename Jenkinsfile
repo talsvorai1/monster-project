@@ -41,14 +41,14 @@ pipeline {
                 script {
                     try {
                         echo 'Testing app connectivity with unittest'
-                        sh '''
+                        sh 
                         cd weather_project
                         python3 -m unittest connection_unittest.py
                         '''
                         echo 'Testing funcionallity via positive and negative selenium tests'
                         sh '''
                         cd weather_project
-                        docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER 1111111
+                        docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
                         python3 selenium_negative.py 
                         python3 selenium_positive.py 
                         docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
