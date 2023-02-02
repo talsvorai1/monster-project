@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    environment {
-        OLDER_BUILD = "${BUILD_NUMBER.toInteger() - 2}"
-    }
-    
+
     stages {
         stage('Clean') {
             steps {
@@ -22,7 +19,7 @@ pipeline {
                 sh '''
                 cd weather_project
                 docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .
-                docker run -d -p 80:8989 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                docker run -d -p 80:443 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
                 docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER                
                 '''
             }
@@ -63,7 +60,8 @@ pipeline {
 	                    ssh -o StrictHostKeyChecking=no -l ubuntu 3.226.109.188 << EOF
 			            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
 		                docker pull 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
-                        docker rmi -f 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$OLDER_BUILD
+                        kubectl apply deployment monster-deployment --image=642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER --replicas=3
+                        kubectl expose deployment monster-deployment --port=443 --target-port=443 --type=LoadBalancer --name=monster-service --node-port=30100
         			    '''
 		            }
 		        }
