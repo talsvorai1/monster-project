@@ -1,6 +1,10 @@
 pipeline {
     agent any
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> parent of 281a61f... Erasing older images in deploy server
     stages {
         stage('Clean') {
             steps {
@@ -59,7 +63,11 @@ pipeline {
                         sh '''
 	                    ssh -o StrictHostKeyChecking=no -l ubuntu 3.226.109.188 << EOF
 			            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
+<<<<<<< HEAD
 		                docker pull $IMAGE
+=======
+		                docker pull 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+>>>>>>> parent of 281a61f... Erasing older images in deploy server
         			    '''
 		            }
 		        }
