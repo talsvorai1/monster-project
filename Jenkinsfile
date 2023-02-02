@@ -65,6 +65,7 @@ pipeline {
 		        }
             }
         }
+    }    
     post {
         failure {
 	        slackSend channel: "devops-alerts", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
