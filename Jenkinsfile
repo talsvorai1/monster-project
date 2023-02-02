@@ -40,6 +40,7 @@ pipeline {
                 docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
                 '''
             }
+        }    
         stage('Upload to ECR') {
             steps {
                 echo 'Uploading artifact to ECR'
@@ -49,8 +50,6 @@ pipeline {
                 '''
             }
         }
-
-
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
