@@ -41,7 +41,7 @@ pipeline {
                 script {
                     try {
                         echo 'Testing app connectivity with unittest'
-                        sh 
+                        sh '''
                         cd weather_project
                         python3 -m unittest connection_unittest.py
                         '''
