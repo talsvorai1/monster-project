@@ -58,7 +58,6 @@ pipeline {
 		            sshagent(['monster-deploy-cred']) {
                     sh '''
 	                ssh -o StrictHostKeyChecking=no -l ubuntu 3.226.109.188 << EOF
-
 			        sed -i "s~image:.*~image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER~" monster-deployment.yaml                    
                     kubectl apply -f monster-deployment.yaml
                     '''
