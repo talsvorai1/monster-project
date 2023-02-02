@@ -49,7 +49,7 @@ pipeline {
                 '''
             }
         }
-        
+
 
         stage('Deploy') {
             steps {
