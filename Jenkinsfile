@@ -48,8 +48,8 @@ pipeline {
                         sh '''
                         cd weather_project
                         docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
-                        python3 selenium_negative.py 
                         python3 selenium_positive.py 
+                        python3 selenium_negative.py 
                         docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
                         '''
                     } catch (error) {

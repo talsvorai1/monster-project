@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 #import time
+import time
 from selenium.webdriver.common.by import By
 ###
 options = webdriver.ChromeOptions()
@@ -26,8 +27,10 @@ def positive_test(valid_city):
     driver.quit()
 
 def main():
-    my_valid_city = "Barcelona"
+    my_valid_city = "lod"
+    time.sleep(5) #wait 10 seconds
     positive_test(my_valid_city)
+
     
 if __name__ == '__main__':
     main()
