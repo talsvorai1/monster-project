@@ -80,7 +80,7 @@ pipeline {
         }
         stage('Deployment') {
             when {
-                expression { return ${env.GIT_BRANCH} == 'origin/main' }
+                expression { return "${env.GIT_BRANCH}" == "origin/main" }
             }            
             steps {
                 script {
