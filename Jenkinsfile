@@ -2,10 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Check variables') {
+            echo '${env.BRANCH_NAME} ${env.CHANGE_EVENT}'
+        }
         stage('Clean') {
             when {
                 expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
-            }  
+            }      
             steps {
                 script {
                     try {
