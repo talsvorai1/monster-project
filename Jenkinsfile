@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('Clean') {
             steps {
@@ -18,7 +19,7 @@ pipeline {
                 }                    
             }
         }
-        stage('Build') {         
+        stage('Build') {
             steps {
                 script {
                     try {
@@ -35,7 +36,7 @@ pipeline {
                 }       
             }
         }
-        stage('Test') {     
+        stage('Test') {
             steps {
                 script {
                     try {
@@ -74,9 +75,6 @@ pipeline {
             }    
         }
         stage('Deployment') {
-            when {
-                expression { return "${env.GIT_BRANCH}" == "origin/main" }
-            }            
             steps {
                 script {
                     try {
