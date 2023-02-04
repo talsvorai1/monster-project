@@ -31,7 +31,7 @@ def main():
     my_valid_city2 = "lisbon"
     time.sleep(5) #wait 5 seconds
     positive_test(my_valid_city1)
-    time.sleep(5) #wait 5 seconds
+    time.sleep(10) #wait 5 seconds
     positive_test(my_valid_city2)
     
 if __name__ == '__main__':
