@@ -1,16 +1,12 @@
 pipeline {
     agent any
     stages {
-        stage('Check variables') {
+        stage('Check branch') {
             steps {
                 echo "BRANCH_NAME = ${env.GIT_BRANCH}"
-                echo "CHANGE_EVENT = ${env.CHANGE_EVENT}"
             }
         }
         stage('Clean') {
-            when {
-                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
-            }      
             steps {
                 script {
                     try {
@@ -27,10 +23,7 @@ pipeline {
                 }                    
             }
         }
-        stage('Build') {
-            when {
-                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
-            }              
+        stage('Build') {         
             steps {
                 script {
                     try {
@@ -47,10 +40,7 @@ pipeline {
                 }       
             }
         }
-        stage('Test') {
-            when {
-                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
-            }              
+        stage('Test') {     
             steps {
                 script {
                     try {
@@ -74,9 +64,6 @@ pipeline {
             }    
         }    
         stage('Push to ECR') {
-            when {
-                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
-            }            
             steps {
                 script {
                     try {
@@ -93,7 +80,7 @@ pipeline {
         }
         stage('Deployment') {
             when {
-                expression { return env.BRANCH_NAME == 'main' && env.CHANGE_EVENT == 'pull_request' }
+                expression { return env.BRANCH_NAME == 'origin/main' }
             }            
             steps {
                 script {
