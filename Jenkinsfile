@@ -3,6 +3,9 @@ pipeline {
 
     stages {
         stage('Clean') {
+            when {
+                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
+            }  
             steps {
                 script {
                     try {
@@ -20,6 +23,9 @@ pipeline {
             }
         }
         stage('Build') {
+            when {
+                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
+            }              
             steps {
                 script {
                     try {
@@ -37,6 +43,9 @@ pipeline {
             }
         }
         stage('Test') {
+            when {
+                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
+            }              
             steps {
                 script {
                     try {
@@ -60,6 +69,9 @@ pipeline {
             }    
         }    
         stage('Push to ECR') {
+            when {
+                expression { return env.BRANCH_NAME == 'Dev' && env.CHANGE_EVENT == 'push' }
+            }            
             steps {
                 script {
                     try {
@@ -75,6 +87,9 @@ pipeline {
             }    
         }
         stage('Deployment') {
+            when {
+                expression { return env.BRANCH_NAME == 'main' && env.CHANGE_EVENT == 'pull_request' }
+            }            
             steps {
                 script {
                     try {
