@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Check branch') {
-            steps {
-                echo "BRANCH_NAME = ${env.GIT_BRANCH}"
-            }
-        }
         stage('Clean') {
             steps {
                 script {
