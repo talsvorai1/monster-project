@@ -34,7 +34,7 @@ def negative_test(invalid_city):
 
 def main():
     my_invalid_city = "kjwvknhwekjvh"
-    time.sleep(10) #wait 10 seconds
+    time.sleep(5) #wait 10 seconds
     negative_test(my_invalid_city)
 
 
