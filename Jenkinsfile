@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        BRANCH_NAME = env.BRANCH_NAME ?: "default_branch"
+        CHANGE_EVENT = env.CHANGE_EVENT ?: "default_event"
+    }    
     stages {
         stage('Check variables') {
             steps {
