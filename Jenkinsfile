@@ -1,13 +1,9 @@
 pipeline {
     agent any
-    environment {
-        BRANCH_NAME = env.BRANCH_NAME ?: "default_branch"
-        CHANGE_EVENT = env.CHANGE_EVENT ?: "default_event"
-    }    
     stages {
         stage('Check variables') {
             steps {
-                echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+                echo "BRANCH_NAME = ${env.GIT_BRANCH}"
                 echo "CHANGE_EVENT = ${env.CHANGE_EVENT}"
             }
         }
