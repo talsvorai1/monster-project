@@ -1,10 +1,14 @@
 pipeline {
     agent any
-
+    environment {
+        BRANCH_NAME = env.BRANCH_NAME
+        CHANGE_EVENT = env.CHANGE_EVENT
+    }
     stages {
         stage('Check variables') {
             steps {
-                echo '$BRANCH_NAME $CHANGE_EVENT'
+                echo "Branch Name: ${BRANCH_NAME}"
+                echo "Change Event: ${CHANGE_EVENT}"
             }
         }
         stage('Clean') {
