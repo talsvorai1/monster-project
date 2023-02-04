@@ -1,8 +1,0 @@
- {% if files %}
- <h2>Downloads</h2>
- {% for file in files %}
-   <a href="{{ url_for('download_file', filename=file) }}"><button>Download {{ file }}</button></a>
- {% endfor %}
- {% endif %}
-</body>
-</html>

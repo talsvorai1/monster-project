@@ -7,19 +7,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
-  <style>
-    body {
-        background-color: {{ bg_color }};
-    }
-  </style>
-
-
-
-
 </head>
-<body>  
+<body>
+
+ 
  <div class="container">
 <h2>Weather Forecast</h2> 
 <form method="POST">
@@ -28,13 +19,5 @@
 </form>
  </div>
 
- <a href="/downloads"><button>Show downloads</button></a>
-
- {% if files %}
- <h2>Downloads</h2>
- {% for file in files %}
-   <a href="{{ url_for('download_file', filename=file) }}"><button>Download {{ file }}</button></a>
- {% endfor %}
- {% endif %}
 </body>
 </html>
