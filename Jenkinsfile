@@ -3,7 +3,9 @@ pipeline {
 
     stages {
         stage('Check variables') {
-            echo '${env.BRANCH_NAME} ${env.CHANGE_EVENT}'
+            steps {
+                echo '${env.BRANCH_NAME} ${env.CHANGE_EVENT}'
+            }
         }
         stage('Clean') {
             when {
