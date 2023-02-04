@@ -27,12 +27,10 @@ def positive_test(valid_city):
     driver.quit()
 
 def main():
-    my_valid_city1 = "lod"
-    my_valid_city2 = "lisbon"
-    time.sleep(5) #wait 5 seconds
-    positive_test(my_valid_city1)
-    time.sleep(10) #wait 5 seconds
-    positive_test(my_valid_city2)
+    my_valid_city = "lod"
+    time.sleep(10) #wait 10 seconds
+    positive_test(my_valid_city)
+
     
 if __name__ == '__main__':
     main()

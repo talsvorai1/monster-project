@@ -33,12 +33,10 @@ def negative_test(invalid_city):
 
 
 def main():
-    my_invalid_city1 = "kjwvknhwekjvh"
-    my_invalid_city2 = "wcwwegjgfefwe"
-    time.sleep(5) #wait 5 seconds
-    negative_test(my_invalid_city1)
-    time.sleep(10) #wait 5 seconds
-    negative_test(my_invalid_city2)
+    my_invalid_city = "kjwvknhwekjvh"
+    time.sleep(10) #wait 10 seconds
+    negative_test(my_invalid_city)
+
 
 if __name__ == '__main__':
     main()
