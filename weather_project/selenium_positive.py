@@ -26,8 +26,10 @@ def positive_test(valid_city):
     driver.quit()
 
 def main():
-    my_valid_city = "Barcelona"
-    positive_test(my_valid_city)
+    my_valid_city1 = "lod"
+    my_valid_city2 = "lisbon"
+    positive_test(my_valid_city1)
+    positive_test(my_valid_city2)
     
 if __name__ == '__main__':
     main()

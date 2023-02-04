@@ -33,8 +33,10 @@ def negative_test(invalid_city):
 
 
 def main():
-    my_invalid_city = "kjwvknhwekjvh"
-    negative_test(my_invalid_city)
+    my_invalid_city1 = "kjwvknhwekjvh"
+    my_invalid_city2 = "wcwwegjgfefwe"
+    negative_test(my_invalid_city1)
+    negative_test(my_invalid_city2)
 
 if __name__ == '__main__':
     main()
