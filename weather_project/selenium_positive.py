@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 #import time
 import time
 from selenium.webdriver.common.by import By
+import sys
 ###
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
@@ -21,10 +22,16 @@ def positive_test(valid_city):
     #to press enter:
     search.send_keys(Keys.RETURN)
     #in result.html class = "card". if found it means name is valid and city is returned, not error:
-    assert driver.find_element(By.CLASS_NAME, "card")
-    print("Positive test - Name found by webstie - Test successful")
-    driver.close()
-    driver.quit()
+    if driver.find_element(By.CLASS_NAME, "card"):
+        print("Positive test - Name found by webstie - Test successful")
+        driver.close()
+        driver.quit()
+    else:
+        print("Positive test - Name was not found by website - Test unseccessful")
+        driver.close()
+        driver.quit()
+        sys.exit(1)
+
 
 def main():
     my_valid_city = "lod"
