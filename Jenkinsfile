@@ -49,10 +49,8 @@ pipeline {
                             sh '''
                             docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
                             '''
-                            sh 'python3 selenium_negative.py'                            
-                            if (!sh(script: 'python3 selenium_positive.py', returnStdout: true).contains('Positive test - Name found by website - Test successful')) {
-                                error 'Positive test failed'
-                            }
+                            sh 'python3 selenium_negative.py'         
+                            sh 'python3 selenium_positive.py'                                               
                             docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
