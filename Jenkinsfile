@@ -41,7 +41,7 @@ pipeline {
                     sh 'python3 -m unittest connection_unittest.py'
                     script {
                         try {
-                            if (returnStatus: true, (script: "echo \\$?")) {
+                            if (returnStatus(script: "echo \\$?")) {
                                 error("Conncection test failed")
                             }
                         } catch (error) {
@@ -51,7 +51,7 @@ pipeline {
                     sh "python3 selenium_positive.py"
                     script {
                         try {
-                            if (returnStatus: true, (script: "echo \\$?")) {
+                            if (returnStatus(script: "echo \\$?")) {
                                 error("Positive test failed")
                             }
                         } catch (error) {
@@ -61,7 +61,7 @@ pipeline {
                     sh "python3 selenium_negative.py"
                     script {
                         try {
-                            if (returnStatus: true, (script: "echo \\$?")) {
+                            if (returnStatus(script: "echo \\$?")) {
                                 error("Negative test failed")
                             }
                         } catch (error) {
