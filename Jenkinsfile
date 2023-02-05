@@ -35,42 +35,29 @@ pipeline {
                 }       
             }
         }
-        stage("Run tests") {
+        stage('Test') {     
             steps {
-                dir ('weather_project') {
-                    sh 'python3 -m unittest connection_unittest.py'
-                    script {
-                        try {
-                            if (returnStatus(script: "echo \\$?")) {
-                                error("Conncection test failed")
-                            }
-                        } catch (error) {
-                            slackSend channel: "devops-alerts", message: "Build Failed in connection test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                        }
+                script {
+                    try {
+                        echo 'Testing app connectivity with unittest'
+                        sh '''
+                        cd weather_project
+                        python3 -m unittest connection_unittest.py
+                        '''
+                        echo 'Testing funcionallity via positive and negative selenium tests'
+                        sh '''
+                        cd weather_project
+                        docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
+                        python3 selenium_positive.py 
+                        python3 selenium_negative.py 
+                        docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
+                        '''
+                    } catch (error) {
+                        slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                     }
-                    sh "python3 selenium_positive.py"
-                    script {
-                        try {
-                            if (returnStatus(script: "echo \\$?")) {
-                                error("Positive test failed")
-                            }
-                        } catch (error) {
-                            slackSend channel: "devops-alerts", message: "Build Failed in positive test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                        }
-                    }                 
-                    sh "python3 selenium_negative.py"
-                    script {
-                        try {
-                            if (returnStatus(script: "echo \\$?")) {
-                                error("Negative test failed")
-                            }
-                        } catch (error) {
-                            slackSend channel: "devops-alerts", message: "Build Failed in negative test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                        }
-                    }    
-                }
-            }
-        }
+                }    
+            }    
+        }    
         stage('Push to ECR') {
             steps {
                 script {
