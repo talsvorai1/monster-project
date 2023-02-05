@@ -20,43 +20,45 @@ pipeline {
         }
         stage('Build') {         
             steps {
-                script {
-                    try {
-                        echo 'Creating new image, running and stopping container'
-                        sh '''
-                        cd weather_project
-                        docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .
-                        docker run -d -p 80:80 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
-                        docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER                
-                        '''
-                    } catch (error) {
-                        slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                    } 
+                dir('weather_project') {
+                    script {
+                        try {
+                            echo 'Creating new image, running and stopping container'
+                            sh '''
+                            docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .
+                            docker run -d -p 80:80 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER                
+                            '''
+                        } catch (error) {
+                            slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                        } 
+                    }
                 }       
             }
         }
         stage('Test') {     
             steps {
-                script {
-                    try {
-                        echo 'Testing app connectivity with unittest'
-                        sh '''
-                        cd weather_project
-                        python3 -m unittest connection_unittest.py
-                        '''
-                        echo 'Testing funcionallity via positive and negative selenium tests'
-                        sh '''
-                        cd weather_project
-                        docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
-                        python3 selenium_positive.py 
-                        python3 selenium_negative.py 
-                        docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
-                        '''
-                    } catch (error) {
-                        slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                dir('weather_project') {
+                    script {
+                        try {
+                            
+                            echo 'Testing app connectivity with unittest'
+                            sh '''
+                            python3 -m unittest connection_unittest.py
+                            '''
+                            echo 'Testing functionality via positive and negative selenium tests'
+                            sh '''
+                            docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
+                            '''
+                            sh 'python3 selenium_negative.py'         
+                            sh 'python3 selenium_positive.py'                                               
+                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
+                        } catch (error) {
+                            slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                        }
                     }
-                }    
-            }    
+                }
+            }     
         }    
         stage('Push to ECR') {
             steps {
