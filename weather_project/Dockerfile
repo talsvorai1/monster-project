@@ -11,8 +11,8 @@ COPY /app.py /get_city_info.py /get_forecast_info.py /connection_unittest.py /se
 COPY /templates/index.html /templates/invalid_name.html /templates/result.html /templates/history.html /home/weather/templates/ 
 
 
-EXPOSE 443
-#to get requests from anywhere via port 443
-CMD gunicorn --bind 0.0.0.0:443 app:app
+EXPOSE 80
+#to get requests from anywhere via port 80
+CMD gunicorn --bind 0.0.0.0:80 app:app
 
 
