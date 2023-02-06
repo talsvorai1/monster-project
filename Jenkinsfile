@@ -15,6 +15,7 @@ pipeline {
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                         currentBuild.result = 'FAILURE'
+                        error 'Build failed in Clean stage'
                     }
                 }                    
             }
@@ -32,7 +33,8 @@ pipeline {
                             '''
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                            currentBuild.result = 'FAILURE'                            
+                            currentBuild.result = 'FAILURE'
+                            error 'Build failed in Build stage'                            
                         } 
                     }
                 }       
@@ -58,6 +60,7 @@ pipeline {
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
+                            error 'Build failed in Test stage'
                         }
                     }
                 }
@@ -75,6 +78,7 @@ pipeline {
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Push stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                         currentBuild.result = 'FAILURE'
+                        error 'Build failed in Push stage'
                     }
                 }    
             }    
@@ -95,6 +99,7 @@ pipeline {
 		            } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Deployment stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                         currentBuild.result = 'FAILURE'
+                        error 'Build failed in Deployment stage'
                     }
                 }    
             }    
