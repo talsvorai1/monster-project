@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monster-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: monster-app
+  template:
+    metadata:
+      labels:
+        app: monster-app
+    spec:
+      containers:
+      - name: monster-app
+        image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:b119d9cb85a5aa053c76bae806151939260760e8-219
+        ports:
+        - containerPort: 80
