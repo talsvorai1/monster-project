@@ -84,7 +84,7 @@ pipeline {
                     try {
                         echo 'Updating image'
                         sh '''
-                        aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest2
+                        sudo aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest2
 			            sed -i "s~image:.*~image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER~" monster-deployment.yaml                    
                         kubectl apply -f monster-deployment.yaml
                         '''
