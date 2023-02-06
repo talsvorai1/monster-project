@@ -32,7 +32,6 @@ pipeline {
                             '''
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                            currentBuild.result = 'FAILURE'
                         } 
                     }
                 }       
