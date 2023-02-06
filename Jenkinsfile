@@ -26,11 +26,7 @@ pipeline {
                     script {
                         try {
                             echo 'Creating new image, running and stopping container'
-                            sh '''
-                            docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .
-                            docker run -d -p 80:80 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
-                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER                
-                            '''
+                            sh 'docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .'           
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
@@ -52,11 +48,11 @@ pipeline {
                             '''
                             echo 'Testing functionality via positive and negative selenium tests'
                             sh '''
-                            docker start monster-container-$GIT_COMMIT-$BUILD_NUMBER
-                            '''
-                            sh 'python3 selenium_negative.py'         
-                            sh 'python3 selenium_positive.py'                                               
-                            sh 'docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER' 
+                            docker run -d -p 80:80 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                            python3 selenium_negative.py         
+                            python3 selenium_positive.py                                               
+                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER
+                            ''' 
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
