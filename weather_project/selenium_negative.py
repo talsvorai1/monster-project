@@ -17,7 +17,7 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 
 def negative_test(invalid_city):
     #open the website
-    driver.get("http://52.200.162.711")
+    driver.get("http://52.200.162.71")
     #in index.html: name = "city"
     search = driver.find_element(By.NAME, "city")
     search.send_keys(invalid_city) 	#write inside search window
