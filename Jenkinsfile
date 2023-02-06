@@ -103,7 +103,6 @@ pipeline {
     post {
 	    success {
             slackSend channel: "succeeded-build", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-            currentBuild.result = 'SUCCESS'
 	    }
     }    
 }
