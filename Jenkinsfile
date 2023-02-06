@@ -14,6 +14,7 @@ pipeline {
                         '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                        currentBuild.result = 'FAILURE'
                     }
                 }                    
             }
@@ -31,6 +32,7 @@ pipeline {
                             '''
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                            currentBuild.result = 'FAILURE'                            
                         } 
                     }
                 }       
@@ -52,9 +54,10 @@ pipeline {
                             '''
                             sh 'python3 selenium_negative.py'         
                             sh 'python3 selenium_positive.py'                                               
-                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER 
+                            sh 'docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER' 
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                            currentBuild.result = 'FAILURE'
                         }
                     }
                 }
@@ -71,6 +74,7 @@ pipeline {
                         '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Push stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                        currentBuild.result = 'FAILURE'
                     }
                 }    
             }    
@@ -90,6 +94,7 @@ pipeline {
                         '''
 		            } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Deployment stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                        currentBuild.result = 'FAILURE'
                     }
                 }    
             }    
