@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPLICA_NUMBER = '6'
+        REPLICA_NUMBER = '2'
     }
     stages {
         stage('Clean') {
