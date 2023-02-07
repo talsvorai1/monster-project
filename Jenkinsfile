@@ -8,12 +8,18 @@ pipeline {
             steps {
                 script {
                     try {
-                        echo 'Removing old image and container'
+                        echo 'Removing old images and containers if exist (-n meaning non-empty test)'
                         sh '''
-                        docker run hello-world
-                        docker stop $(docker ps -aq)
-                        docker rm $(docker ps -aq)
-                        docker rmi -f $(docker images -q)
+                        containers_var=$(docker ps -aq)
+                        if [ -n "$containers_var" ]; then
+                            docker stop $containers_var
+                            docker rm $containers_var
+                        fi
+
+                        images_var=$(docker images -q)
+                        if [ -n "$images_var" ]; then
+                            docker rmi -f $images_var
+                        fi
                         '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
