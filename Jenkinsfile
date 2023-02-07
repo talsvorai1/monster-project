@@ -104,6 +104,8 @@ pipeline {
 			            sed -i "s~image:.*~image: $ECR_REPO:$TAG~" monster-deployment.yaml
                         sed -i "s/replicas:.*/replicas: $REPLICA_NUMBER/g" monster-deployment.yaml       
                         kubectl apply -f monster-deployment.yaml
+                        kubectl apply -f monster-service.yaml
+                        kubectl apply -f monster-ingress.yaml
                         '''
 		            } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Deployment stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
@@ -116,7 +118,7 @@ pipeline {
     }    
     post {
 	    success {
-            slackSend channel: "Succeeded-build", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            slackSend channel: "succeeded-build", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
 	    }
     }    
 }
