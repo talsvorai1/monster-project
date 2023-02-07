@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         REPLICA_NUMBER = '2'
+        TAG = "${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
     }
     stages {
         stage('Clean') {
@@ -35,7 +36,7 @@ pipeline {
                     script {
                         try {
                             echo 'Creating new image, running and stopping container'
-                            sh 'docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER .'           
+                            sh 'docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG .'           
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
@@ -57,10 +58,10 @@ pipeline {
                             '''
                             echo 'Testing functionality via positive and negative selenium tests'
                             sh '''
-                            docker run -d -p 80:80 --name monster-container-$GIT_COMMIT-$BUILD_NUMBER 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                            docker run -d -p 80:80 --name monster-container-$TAG 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG
                             python3 selenium_negative.py         
                             python3 selenium_positive.py                                               
-                            docker stop monster-container-$GIT_COMMIT-$BUILD_NUMBER
+                            docker stop monster-container-$TAG
                             ''' 
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Test stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
@@ -78,7 +79,7 @@ pipeline {
                         echo 'Uploading artifact to ECR'
                         sh '''
                         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
-                        docker push 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER
+                        docker push 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG
                         '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Push stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
@@ -99,7 +100,7 @@ pipeline {
                         sh '''
                         sudo aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest2
                         cp monster-deployment.yaml monster-deployment-backup.yaml
-			            sed -i "s~image:.*~image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$GIT_COMMIT-$BUILD_NUMBER~" monster-deployment.yaml
+			            sed -i "s~image:.*~image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG~" monster-deployment.yaml
                         sed -i "s/replicas:.*/replicas: $REPLICA_NUMBER/g" monster-deployment.yaml       
                         kubectl apply -f monster-deployment.yaml
                         '''
