@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     app: monster-app
-#Creating LoadBalancer that exposes the app on port 443
+#Creating LoadBalancer that exposes the app on port 80
 #and forwards the traffic to the pods on port 30100
   type: LoadBalancer
   ports:
