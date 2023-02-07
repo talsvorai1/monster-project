@@ -3,6 +3,7 @@ pipeline {
     environment {
         REPLICA_NUMBER = '2'
         TAG = "${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+        ECR_REPO = '642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo'
     }
     stages {
         stage('Clean') {
@@ -36,7 +37,7 @@ pipeline {
                     script {
                         try {
                             echo 'Creating new image, running and stopping container'
-                            sh 'docker build -t 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG .'           
+                            sh 'docker build -t $ECR_REPO:$TAG .'           
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
@@ -58,7 +59,7 @@ pipeline {
                             '''
                             echo 'Testing functionality via positive and negative selenium tests'
                             sh '''
-                            docker run -d -p 80:80 --name monster-container-$TAG 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG
+                            docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG
                             python3 selenium_negative.py         
                             python3 selenium_positive.py                                               
                             docker stop monster-container-$TAG
@@ -79,7 +80,7 @@ pipeline {
                         echo 'Uploading artifact to ECR'
                         sh '''
                         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 642341975645.dkr.ecr.us-east-1.amazonaws.com
-                        docker push 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG
+                        docker push $ECR_REPO:$TAG
                         '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Push stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
@@ -100,7 +101,7 @@ pipeline {
                         sh '''
                         sudo aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest2
                         cp monster-deployment.yaml monster-deployment-backup.yaml
-			            sed -i "s~image:.*~image: 642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo:$TAG~" monster-deployment.yaml
+			            sed -i "s~image:.*~image: $ECR_REPO:$TAG~" monster-deployment.yaml
                         sed -i "s/replicas:.*/replicas: $REPLICA_NUMBER/g" monster-deployment.yaml       
                         kubectl apply -f monster-deployment.yaml
                         '''
