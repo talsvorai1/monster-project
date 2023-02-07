@@ -1,0 +1,42 @@
+input: aws efs create-file-system --encrypted --tags Key=Name,Value=monster-efs 
+
+{
+    "OwnerId": "642341975645",
+    "CreationToken": "42fff159-05dc-4b48-aa46-d278c253f67f",
+    "FileSystemId": "fs-0619e5bf5e7112435",
+    "FileSystemArn": "arn:aws:elasticfilesystem:us-east-1:642341975645:file-system/fs-0619e5bf5e7112435",
+    "CreationTime": "2023-02-07T18:00:01+02:00",
+    "LifeCycleState": "creating",
+    "Name": "monster-efs",
+    "NumberOfMountTargets": 0,
+    "SizeInBytes": {
+        "Value": 0,
+        "ValueInIA": 0,
+        "ValueInStandard": 0
+    },
+    "PerformanceMode": "generalPurpose",
+    "Encrypted": true,
+    "KmsKeyId": "arn:aws:kms:us-east-1:642341975645:key/803dfd51-eb17-42b2-ad55-d0f3cc795f66",
+    "ThroughputMode": "bursting",
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "monster-efs"
+        }
+    ]
+}
+
+input: aws efs create-mount-target --file-system-id fs-0619e5bf5e7112435 --subnet-id subnet-07200407bea2f5ea1 
+
+{
+    "OwnerId": "642341975645",
+    "MountTargetId": "fsmt-015b5bd98b54d25d5",
+    "FileSystemId": "fs-0619e5bf5e7112435",
+    "SubnetId": "subnet-07200407bea2f5ea1",
+    "LifeCycleState": "creating",
+    "IpAddress": "172.31.18.247",
+    "NetworkInterfaceId": "eni-0405c98ca55543255",
+    "AvailabilityZoneId": "use1-az4",
+    "AvailabilityZoneName": "us-east-1a",
+    "VpcId": "vpc-0fffeab00b2a17a08"
+}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: monster-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    server: fs-0619e5bf5e7112435.efs.us-east-1.amazonaws.com
+    path: "/"
+  persistentVolumeReclaimPolicy: Retain
