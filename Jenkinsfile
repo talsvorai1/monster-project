@@ -106,6 +106,8 @@ pipeline {
                         kubectl apply -f monster-deployment.yaml
                         kubectl apply -f monster-service.yaml
                         kubectl apply -f monster-ingress.yaml
+                        kubectl apply -f monster-pv.yaml
+                        kubectl apply -f monster-pvc.yaml
                         '''
 		            } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Deployment stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
