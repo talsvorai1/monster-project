@@ -17,7 +17,7 @@ pipeline {
                             echo 'Removing stopped containers, networks unused, dangling images, build cache'
                             sh 'docker system prune'
                             sh '''
-                            previous_containers=$(docker ps -aq --filter "before=monster-container-$TAG")
+                            previous_containers=$(docker ps -aq --filter "before=monster-container-$TAG" "since=python:3.8-alpine")
                             if [ -n "$previous_containers" ]; then
                                 docker stop $previous_containers
                                 docker rm $previous_containers
