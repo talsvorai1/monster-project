@@ -27,7 +27,7 @@ pipeline {
                                 docker rm $previous_containers
                             fi
 
-                            previous_images=$(docker images -q --filter "before=$ECR_REPO:$TAG" "since=python:3.8-alpine")
+                            previous_images=$(docker images -aq --filter "before=$ECR_REPO:$TAG" "since=python:3.8-alpine")
                             if [ -n "$previous_images" ]; then
                                 docker rmi -f $previous_images
                             fi
