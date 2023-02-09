@@ -8,18 +8,20 @@ pipeline {
     stages {
         stage('Build and Clean') {
             steps {
-                script {
-                    try {
-                        echo 'Creating new image'
-                        sh 'docker build -t $ECR_REPO:$TAG .'
-                        sh 'docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG'
-                        echo 'Removing stopped containers, networks unused, dangling images, build cache'
-                        sh 'docker system prune'
-                    } catch (error) {
-                        slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-                        currentBuild.result = 'FAILURE'
-                        error 'Build failed in Build and Clean stage'
-                    }
+                dir('weather_project') {
+                    script {
+                        try {
+                            echo 'Creating new image'
+                            sh 'docker build -t $ECR_REPO:$TAG .'
+                            sh 'docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG'
+                            echo 'Removing stopped containers, networks unused, dangling images, build cache'
+                            sh 'docker system prune'
+                        } catch (error) {
+                            slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                            currentBuild.result = 'FAILURE'
+                            error 'Build failed in Build and Clean stage'
+                        }
+                    }    
                 }                    
             }
         }
