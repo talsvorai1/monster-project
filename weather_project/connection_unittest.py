@@ -16,7 +16,6 @@ class TestingReachability(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
 
 
-#To start test: python3 unittest -m testing_reachability.py
 
 
 
