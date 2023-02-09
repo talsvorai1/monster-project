@@ -28,7 +28,7 @@ def positive_test(valid_city):
 
 def main():
     my_valid_city = "lod"
-    time.sleep(3) #wait 3 seconds
+    time.sleep(1) #wait a second
     positive_test(my_valid_city)
 
     

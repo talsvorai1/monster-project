@@ -14,16 +14,16 @@ pipeline {
                             echo 'Creating new image and container'
                             sh '''
                             docker build -t $ECR_REPO:$TAG .
-                            docker stop $(docker ps -aq)
+                            current_containers=$(docker ps -aq)
+                            if [ -n "$current_containers" ]; then
+                                docker stop $current_containers
+                            fi    
                             docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG
                             '''
-                            echo 'Removing stopped containers, networks unused, dangling images, build cache'
-                            sh 'docker system prune'
-                            echo 'Images and containers prior to current ones'
+                            echo 'Removing images and containers prior to current'
                             sh '''
                             previous_containers=$(docker ps -aq --filter "before=monster-container-$TAG")
                             if [ -n "$previous_containers" ]; then
-                                docker stop $previous_containers
                                 docker rm $previous_containers
                             fi
 
