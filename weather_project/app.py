@@ -23,7 +23,7 @@ handler = logging.FileHandler(log_file, mode=log_mode)
 #add log file handler to logger
 logger.addHandler(handler)
 #log a message
-logger.debug('This is yet another new debugging message')
+logger.debug('This is a debugging message')
 ############V
 ############V
 
