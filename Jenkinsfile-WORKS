@@ -6,21 +6,45 @@ pipeline {
         ECR_REPO = '642341975645.dkr.ecr.us-east-1.amazonaws.com/monster-image-repo'
     }
     stages {
-        stage('Build and Clean') {
+        stage('Clean') {
             steps {
                 script {
                     try {
-                        echo 'Creating new image'
-                        sh 'docker build -t $ECR_REPO:$TAG .'
-                        sh 'docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG'
-                        echo 'Removing stopped containers, networks unused, dangling images, build cache'
-                        sh 'docker system prune'
+                        echo 'Removing old images and containers if exist (-n meaning non-empty test)'
+                        sh '''
+                        containers_var=$(docker ps -aq)
+                        if [ -n "$containers_var" ]; then
+                            docker stop $containers_var
+                            docker rm $containers_var
+                        fi
+
+                        images_var=$(docker images -q)
+                        if [ -n "$images_var" ]; then
+                            docker rmi -f $images_var
+                        fi
+                        '''
                     } catch (error) {
                         slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                         currentBuild.result = 'FAILURE'
-                        error 'Build failed in Build and Clean stage'
+                        error 'Build failed in Clean stage'
                     }
                 }                    
+            }
+        }
+        stage('Build') {         
+            steps {
+                dir('weather_project') {
+                    script {
+                        try {
+                            echo 'Creating new image, running and stopping container'
+                            sh 'docker build -t $ECR_REPO:$TAG .'           
+                        } catch (error) {
+                            slackSend channel: "devops-alerts", message: "Build Failed in Build stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                            currentBuild.result = 'FAILURE'
+                            error 'Build failed in Build stage'                            
+                        } 
+                    }
+                }       
             }
         }
         stage('Test') {     
@@ -35,6 +59,7 @@ pipeline {
                             '''
                             echo 'Testing functionality via positive and negative selenium tests'
                             sh '''
+                            docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG
                             python3 selenium_negative.py         
                             python3 selenium_positive.py                                               
                             docker stop monster-container-$TAG
