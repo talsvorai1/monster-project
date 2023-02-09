@@ -16,6 +16,18 @@ pipeline {
                             sh 'docker run -d -p 80:80 --name monster-container-$TAG $ECR_REPO:$TAG'
                             echo 'Removing stopped containers, networks unused, dangling images, build cache'
                             sh 'docker system prune'
+                            sh '''
+                            previous_containers=$(docker ps -aq --filter "before=monster-container-$TAG")
+                            if [ -n "$previous_containers" ]; then
+                                docker stop $previous_containers
+                                docker rm $previous_containers
+                            fi
+
+                            previous_images=$(docker images -q --filter "before=$ECR_REPO:$TAG")
+                            if [ -n "$previous_images" ]; then
+                                docker rmi -f $previous_images
+                            fi
+                            '''
                         } catch (error) {
                             slackSend channel: "devops-alerts", message: "Build Failed in Clean stage: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                             currentBuild.result = 'FAILURE'
