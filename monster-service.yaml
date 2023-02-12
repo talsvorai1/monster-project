@@ -12,8 +12,7 @@ spec:
 #and forwards the traffic to the pods on port 30200
   type: LoadBalancer
   ports:
-  - nodePort : 30200
+  - nodePort : 30100
     protocol: TCP
     port: 80
     targetPort: 80
-  sessionAffinity: ClientIP
