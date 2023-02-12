@@ -9,10 +9,10 @@ spec:
   selector:
     app: monster-app
 #Creating LoadBalancer that exposes the app on port 80
-#and forwards the traffic to the pods on port 30100
+#and forwards the traffic to the pods on port 30200
   type: LoadBalancer
   ports:
-  - nodePort : 30100
+  - nodePort : 30200
     protocol: TCP
     port: 80
     targetPort: 80
