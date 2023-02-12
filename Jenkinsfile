@@ -92,7 +92,7 @@ pipeline {
                     try {
                         echo 'Updating image'
                         sh '''
-                        sudo aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest2
+                        sudo aws eks --region us-east-1 update-kubeconfig --name monster-eks-cluster-newest3
                         cp monster-deployment.yaml monster-deployment-backup.yaml
 			            sed -i "s~image:.*~image: $ECR_REPO:$TAG~" monster-deployment.yaml
                         sed -i "s/replicas:.*/replicas: $REPLICA_NUMBER/g" monster-deployment.yaml       
